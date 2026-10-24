@@ -1,0 +1,740 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>InteractiveWorld: A Verifiable Human-Centric Environment for Building Better Interactive MLLM Assistants</title>
+    <meta
+      name="description"
+      content="InteractiveWorld is the first verifiable environment for closed-loop interaction between a human and a wearable AI assistant. InteractiveBench evaluates 12 frontier MLLMs on 120 multi-turn tasks."
+    />
+    <link rel="icon" href="media/meta_logo.svg" />
+    <script>
+      (function () {
+        var theme = null;
+        try {
+          theme = localStorage.getItem("iw-theme-v2");
+        } catch (e) {}
+        document.documentElement.dataset.theme = theme === "dark" ? "dark" : "light";
+        document.documentElement.classList.add("js");
+      })();
+    </script>
+    <link rel="stylesheet" href="assets/style.css?v=18" />
+    <link rel="stylesheet" href="assets/bench.css?v=18" />
+  </head>
+  <body>
+    <div class="backdrop" aria-hidden="true"></div>
+
+    <header class="site-header" id="siteHeader">
+      <a class="brand" href="#top">
+        <img class="brand-meta logo-dark" src="media/meta_logo.svg" alt="Meta" width="78" height="16" />
+        <img class="brand-meta logo-light" src="media/meta_logo_light.svg" alt="Meta" width="78" height="16" />
+        <span class="brand-divider" aria-hidden="true"></span>
+        <span class="brand-name">InteractiveWorld</span>
+      </a>
+      <div class="header-right">
+        <nav class="site-nav">
+          <a href="#world"><span class="nav-pre">Interactive</span>World</a>
+          <a href="#bench"><span class="nav-pre">Interactive</span>Bench</a>
+          <a href="#results">Results</a>
+        </nav>
+        <button type="button" class="theme-toggle" id="themeToggle" aria-label="Switch to dark mode">
+          <svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2" /><path d="M12 2.5v2.2M12 19.3v2.2M4.6 4.6l1.6 1.6M17.8 17.8l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.6 19.4l1.6-1.6M17.8 6.2l1.6-1.6" /></svg>
+          <svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.6A8.5 8.5 0 0 1 9.4 3.5a8.5 8.5 0 1 0 11.1 11.1Z" /></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- ===================================================== HERO -->
+    <section class="hero" id="top" aria-labelledby="paperTitle">
+      <div class="hero-media" aria-hidden="true">
+        <canvas id="heroArt"></canvas>
+      </div>
+      <div class="hero-hud" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+
+      <div class="hero-inner">
+        <h1 class="hero-title" id="paperTitle">
+          <span class="hero-name">InteractiveWorld</span>
+          <span class="hero-sub">A Verifiable Human-Centric Environment for Building Better Interactive MLLM Assistants</span>
+        </h1>
+
+        <ul class="authors" aria-label="Authors">
+          <li><a href="https://wangqinsi1.github.io/" target="_blank" rel="noopener">Qinsi Wang</a></li>
+          <li><a href="https://wenwei202.github.io/" target="_blank" rel="noopener">Wei Wen</a></li>
+          <li><a href="https://chongzhou96.github.io/" target="_blank" rel="noopener">Chong Zhou</a></li>
+          <li><a href="https://scholar.google.com/citations?user=NrHYGZ8AAAAJ&amp;hl=en" target="_blank" rel="noopener">Saksham Suri</a></li>
+          <li><a href="https://zechunliu.com/" target="_blank" rel="noopener">Zechun Liu</a></li>
+          <li><a href="https://sites.google.com/view/lemeng-wu/home" target="_blank" rel="noopener">Lemeng Wu</a></li>
+          <li><a href="https://ece.duke.edu/people/hai-helen-li/" target="_blank" rel="noopener">Hai Helen Li</a></li>
+          <li><a href="https://ece.duke.edu/people/yiran-chen/" target="_blank" rel="noopener">Yiran Chen</a></li>
+          <li><a href="https://scholar.google.com/citations?user=F1mr9C0AAAAJ&amp;hl=en" target="_blank" rel="noopener">Raghuraman Krishnamoorthi</a></li>
+          <li><a href="https://qi-qian.com/" target="_blank" rel="noopener">Qi Qian</a></li>
+        </ul>
+
+        <div class="affiliation">
+          <img class="meta-logo logo-dark" src="media/meta_logo.svg" alt="Meta" width="290" height="60" />
+          <img class="meta-logo logo-light" src="media/meta_logo_light.svg" alt="Meta" width="290" height="60" />
+        </div>
+
+        <div class="hero-links">
+          <span class="link-btn is-soon" title="Coming soon">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h7l5 5v13H7z" /><path d="M14 3v5h5M10 13h6M10 17h6" /></svg>
+            Paper<em>soon</em>
+          </span>
+          <span class="link-btn is-soon" title="Coming soon">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 8-4 4 4 4M15 8l4 4-4 4" /></svg>
+            Code<em>soon</em>
+          </span>
+          <a class="link-btn is-primary" href="#demo">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path class="fill" d="M8 5.5v13l10.5-6.5z" /></svg>
+            Try the Demo
+          </a>
+        </div>
+
+        <div class="hero-question">
+          <p class="q-lead">
+            People have long dreamed of an assistant that is always there: one that sees what they see, remembers
+            what they forget, and guides them through what they have never done. Wearable AI is bringing that dream within reach.
+          </p>
+          <p class="q-main">
+            <span class="q-text" id="heroQuestion">Can today’s agents truly help people in the physical world?</span>
+          </p>
+        </div>
+      </div>
+
+      <a class="scroll-cue" href="#world" aria-label="Scroll to InteractiveWorld"><span></span></a>
+    </section>
+
+    <main>
+      <!-- ================================================ 01 INTERACTIVEWORLD -->
+      <section class="chapter" id="world" aria-labelledby="worldTitle">
+        <header class="chapter-head reveal">
+          <h2 class="chapter-title" id="worldTitle">InteractiveWorld</h2>
+          <p class="chapter-lede">
+            The first environment that realistically simulates a human and a wearable AI assistant
+            interacting in the physical world: the assistant sees through the human’s eyes and talks, the human
+            decides and acts, and the world responds.
+          </p>
+        </header>
+
+        <header class="demo-head reveal">
+          <h2 class="demo-title" id="demoTitle"><span class="demo-live" aria-hidden="true"></span>Interactive Demo</h2>
+          <p class="demo-intro">
+            Pick a request, then watch the glasses assistant guide a simulated person through a photorealistic home.
+          </p>
+        </header>
+
+        <section class="demo" id="demo" aria-labelledby="demoTitle">
+          <div class="console-wrap">
+          <div class="console">
+            <div class="row row-assistant">
+              <span class="avatar avatar-assistant" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M3 10.5c0-1.4 1.1-2.5 2.5-2.5h3.3c1 0 1.9.6 2.3 1.5l.4.9h1l.4-.9c.4-.9 1.3-1.5 2.3-1.5h3.3c1.4 0 2.5 1.1 2.5 2.5v1c0 2.5-2 4.5-4.5 4.5h-.6c-1.9 0-3.5-1.4-3.8-3.3h-.6C10.9 14.6 9.3 16 7.4 16h-.9C4.6 16 3 14.4 3 12.5v-2Z"/></svg>
+              </span>
+              <div class="row-main">
+                <div class="row-label">
+                  <span class="who-name">Glasses assistant</span>
+                  <span class="who-sub" id="assistantStatus">Listening</span>
+                  <span class="alert-badge" id="alertBadge" hidden></span>
+                  <span class="wave" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+                </div>
+                <p class="speech" id="assistantSpeech"></p>
+              </div>
+            </div>
+
+            <div class="row row-human">
+              <span class="avatar avatar-human" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20c.8-3.9 3.9-6 7.5-6s6.7 2.1 7.5 6"/></svg>
+              </span>
+              <div class="row-main">
+                <div class="row-label">
+                  <span class="who-name">You</span>
+                  <span class="who-sub" id="humanStatus">Choose a request</span>
+                </div>
+                <div class="choices" id="choices" role="group" aria-label="Choose what to ask"></div>
+                <p class="speech" id="humanSpeech" hidden></p>
+                <p class="notice" id="choiceNotice" hidden></p>
+              </div>
+            </div>
+
+            <div class="row row-actions">
+              <span class="avatar avatar-actions" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M13.5 4.5a1.8 1.8 0 1 1-3.6 0 1.8 1.8 0 0 1 3.6 0ZM9 21l1.6-6.4L8.5 13V9.4L12 7.6l2.6 2.8 3 .9M10.6 14.6l3 2.4.9 4"/></svg>
+              </span>
+              <div class="row-main">
+                <div class="row-label">
+                  <span class="who-name">Your actions</span>
+                  <span class="who-sub" id="actionStatus">Waiting</span>
+                </div>
+                <ol class="pills" id="pills" aria-live="polite"></ol>
+                <p class="placeholder" id="pillsPlaceholder">Actions will appear here once you ask for help.</p>
+              </div>
+            </div>
+          </div>
+          </div>
+
+          <figure class="viewport" id="viewport" data-state="idle">
+            <video id="video" playsinline muted preload="auto"></video>
+            <div class="hud hud-top">
+              <span class="hud-chip"><span class="rec-dot"></span><span id="hudMode">First-person view</span></span>
+              <span class="hud-chip hud-time" id="hudTime">00:00</span>
+            </div>
+            <aside class="hud-panel hud-kitchen" id="kitchenPanel" hidden>
+              <div class="clock-head">
+                <span class="clock-label" id="clockLabel">Story time</span>
+                <span class="clock-skip" id="clockSkip" hidden></span>
+              </div>
+              <div class="clock-value"><span id="clockNow">00:00</span><span class="clock-limit" id="clockLimit">/ 20:00</span></div>
+              <div class="clock-bar"><span id="clockFill"></span></div>
+              <p class="watch-title" id="watchTitle" hidden></p>
+              <ul class="appliances" id="appliances"></ul>
+            </aside>
+            <aside class="hud-panel hud-avoid" id="avoidPanel" hidden>
+              <p class="avoid-title"><span class="avoid-icon" aria-hidden="true"></span>Keeping these off the menu</p>
+              <ul class="avoid-list" id="avoidList"></ul>
+            </aside>
+            <div class="hud-cta" id="startHint">
+              <span>Choose a request to start</span>
+            </div>
+            <div class="timeline" id="timeline" aria-label="Episode timeline">
+              <button type="button" class="play-toggle" id="playToggle" aria-label="Play or pause" disabled>
+                <svg class="i-play" viewBox="0 0 24 24"><path d="M8 5.5v13l10.5-6.5L8 5.5Z"/></svg>
+                <svg class="i-pause" viewBox="0 0 24 24"><path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z"/></svg>
+              </button>
+              <div class="track" id="track">
+                <div class="track-fill" id="trackFill"></div>
+                <div class="track-marks" id="trackMarks"></div>
+              </div>
+              <span class="legend">
+                <span class="dot dot-assistant"></span>Assistant
+                <span class="dot dot-human"></span>You
+              </span>
+            </div>
+            <div class="end-card" id="endCard" hidden>
+              <p class="end-title" id="endTitle">Done</p>
+              <p class="end-body" id="endBody"></p>
+              <div class="end-buttons">
+                <button type="button" class="btn btn-primary" id="replayBtn">Replay</button>
+                <button type="button" class="btn btn-ghost" id="resetBtn">Ask something else</button>
+              </div>
+            </div>
+          </figure>
+        </section>
+
+        <section class="sim" id="simulator" aria-labelledby="actionsTitle">
+          <header class="sim-head reveal">
+            <h2 id="actionsTitle">50+ Human Actions</h2>
+            <p class="lede">
+              The human agent turns guidance into short commands that name only an action and its
+              targets, such as <code>[GRAB] &lt;cup&gt;</code> or <code>[PUTINSIDE] &lt;tray&gt; &lt;oven&gt;</code>.
+              The simulator works out the motion and renders what the person sees.
+            </p>
+          </header>
+          <ul class="action-grid">
+            <li class="action-tile">
+              <div class="clip"><video data-src="media/clips/grab.mp4" poster="media/clips/grab.jpg" muted loop playsinline preload="none" aria-label="Grab"></video></div>
+              <p class="action-name">Grab</p>
+              <p class="cmd">[GRAB] &lt;olive oil&gt;</p>
+            </li>
+            <li class="action-tile">
+              <div class="clip"><video data-src="media/clips/put.mp4" poster="media/clips/put.jpg" muted loop playsinline preload="none" aria-label="Put"></video></div>
+              <p class="action-name">Put</p>
+              <p class="cmd">[PUT] &lt;pan&gt; &lt;burner&gt;</p>
+            </li>
+            <li class="action-tile">
+              <div class="clip"><video data-src="media/clips/putinside.mp4" poster="media/clips/putinside.jpg" muted loop playsinline preload="none" aria-label="Put inside"></video></div>
+              <p class="action-name">Put Inside</p>
+              <p class="cmd">[PUTINSIDE] &lt;tray&gt; &lt;oven&gt;</p>
+            </li>
+            <li class="action-tile">
+              <div class="clip"><video data-src="media/clips/open.mp4" poster="media/clips/open.jpg" muted loop playsinline preload="none" aria-label="Open"></video></div>
+              <p class="action-name">Open</p>
+              <p class="cmd">[OPEN] &lt;fridge&gt;</p>
+            </li>
+            <li class="action-tile">
+              <div class="clip"><video data-src="media/clips/pour.mp4" poster="media/clips/pour.jpg" muted loop playsinline preload="none" aria-label="Pour"></video></div>
+              <p class="action-name">Pour</p>
+              <p class="cmd">[POUR] &lt;tray&gt; &lt;olive oil&gt;</p>
+            </li>
+            <li class="action-tile">
+              <div class="clip"><video data-src="media/clips/turnon.mp4" poster="media/clips/turnon.jpg" muted loop playsinline preload="none" aria-label="Turn on"></video></div>
+              <p class="action-name">Turn On</p>
+              <p class="cmd">[TURNON] &lt;microwave&gt;</p>
+            </li>
+            <li class="action-tile">
+              <div class="clip"><video data-src="media/clips/cut.mp4" poster="media/clips/cut.jpg" muted loop playsinline preload="none" aria-label="Cut"></video></div>
+              <p class="action-name">Cut</p>
+              <p class="cmd">[CUT] &lt;tomato&gt; &lt;knife&gt;</p>
+            </li>
+            <li class="action-tile">
+              <div class="clip"><video data-src="media/clips/stir.mp4" poster="media/clips/stir.jpg" muted loop playsinline preload="none" aria-label="Stir"></video></div>
+              <p class="action-name">Stir</p>
+              <p class="cmd">[STIR] &lt;pan&gt; &lt;spatula&gt;</p>
+            </li>
+            <li class="action-tile">
+              <div class="clip"><video data-src="media/clips/wipe.mp4" poster="media/clips/wipe.jpg" muted loop playsinline preload="none" aria-label="Wipe"></video></div>
+              <p class="action-name">Wipe</p>
+              <p class="cmd">[WIPE] &lt;sponge&gt; &lt;counter&gt;</p>
+            </li>
+            <li class="action-tile">
+              <div class="clip"><video data-src="media/clips/usecomputer.mp4" poster="media/clips/usecomputer.jpg" muted loop playsinline preload="none" aria-label="Use computer"></video></div>
+              <p class="action-name">Use Computer</p>
+              <p class="cmd">[USECOMPUTER] &lt;keyboard&gt;</p>
+            </li>
+          </ul>
+        </section>
+
+        <section class="sim" id="autonomy" aria-labelledby="autoTitle">
+          <header class="sim-head reveal">
+            <h2 id="autoTitle">Fully Autonomous Planning &amp; Behavior</h2>
+            <p class="lede">
+              The human in InteractiveWorld is an autonomous agent. It hears free-form advice, decides what to do from
+              what it sees, and its body works out the rest: where to stand, how to get there around furniture and
+              through doors, how to lean or squat, and how to grip each object.
+            </p>
+          </header>
+          <div class="auto-grid">
+            <figure class="auto-card">
+              <div class="clip"><video data-src="media/clips/auto_nav.mp4" poster="media/clips/auto_nav.jpg" muted loop playsinline preload="none" aria-label="Auto navigation"></video></div>
+              <figcaption>
+                <h3>Finds Its Own Way</h3>
+                <p class="cmd">[WALK] &lt;washer&gt;</p>
+                <p class="auto-text">Finds a reachable place to stand by the target, plans a collision-aware A* route across rooms and walks it with continuous turns. A closed door on the way is opened, then the walk goes on.</p>
+              </figcaption>
+            </figure>
+            <figure class="auto-card">
+              <div class="clip"><video data-src="media/clips/auto_stance.mp4" poster="media/clips/auto_stance.jpg" muted loop playsinline preload="none" aria-label="Auto stance"></video></div>
+              <figcaption>
+                <h3>Chooses Where to Stand</h3>
+                <p class="cmd">[GRAB] &lt;apple&gt;  →  [PUT] &lt;apple&gt; &lt;counter&gt;</p>
+                <p class="auto-text">Samples standing spots around the target and checks reach, clearance and collisions. The closest valid one wins, so the human walks round the island to the apple, then over to the counter.</p>
+              </figcaption>
+            </figure>
+            <figure class="auto-card">
+              <div class="clip"><video data-src="media/clips/auto_grasp.mp4" poster="media/clips/auto_grasp.jpg" muted loop playsinline preload="none" aria-label="Auto hand pose"></video></div>
+              <figcaption>
+                <h3>Shapes Its Own Grip</h3>
+                <p class="cmd">[GRAB]&nbsp;&lt;apple&gt;&nbsp;· &lt;bottle&gt;&nbsp;· &lt;box&gt;&nbsp;· &lt;pan&gt;&nbsp;· &lt;cup&gt;&nbsp;· &lt;bag&gt;</p>
+                <p class="auto-text">The grasp follows each object's shape and parts: a pinch for small or flat things, a cylindrical wrap for tall ones, a round grip otherwise, and the palm on the bar for handles.</p>
+              </figcaption>
+            </figure>
+          </div>
+        </section>
+      </section>
+
+      <!-- ================================================ 02 INTERACTIVEBENCH -->
+      <section class="chapter" id="bench" aria-labelledby="benchTitle">
+        <header class="chapter-head reveal">
+          <h2 class="chapter-title" id="benchTitle">InteractiveBench</h2>
+          <p class="chapter-lede">
+            The first closed-loop benchmark for egocentric AI assistants, with 120 multi-turn tasks in six categories.
+            In every task, each instruction shapes what the human does next, and success is read from the world’s final
+            state.
+          </p>
+        </header>
+
+        <!-- ---------- a. how we evaluate ---------- -->
+        <div class="block" id="howEval">
+          <div class="block-head reveal">
+            <h3 class="block-title">A Unified Evaluation Framework</h3>
+            <p class="block-lede">
+              The model under test plays the assistant and sees only the human’s first-person view. A fixed MLLM plays
+              the human and only follows its guidance. InteractiveWorld carries out every action, so the assistant’s
+              words decide the outcome.
+            </p>
+          </div>
+
+          <div class="loop-shell reveal">
+            <div class="loop" id="loop" data-step="1">
+              <svg class="loop-wires" viewBox="0 0 1200 600" aria-hidden="true">
+                <defs>
+                  <marker id="ahDim" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="ah" d="M0 0 10 5 0 10z" /></marker>
+                  <marker id="ahGuide" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="ah ah-guide" d="M0 0 10 5 0 10z" /></marker>
+                  <marker id="ahAsk" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="ah ah-ask" d="M0 0 10 5 0 10z" /></marker>
+                  <marker id="ahAct" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="ah ah-act" d="M0 0 10 5 0 10z" /></marker>
+                  <marker id="ahView" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="ah ah-view" d="M0 0 10 5 0 10z" /></marker>
+                </defs>
+                <g class="wire w-guide">
+                  <path class="base" d="M332 150H446" marker-end="url(#ahDim)" />
+                  <path class="lit" d="M332 150H446" marker-end="url(#ahGuide)" />
+                  <path class="flow" pathLength="100" d="M332 150H446" />
+                </g>
+                <g class="wire w-ask">
+                  <path class="base" d="M448 250H334" marker-end="url(#ahDim)" />
+                  <path class="lit" d="M448 250H334" marker-end="url(#ahAsk)" />
+                  <path class="flow" pathLength="100" d="M448 250H334" />
+                </g>
+                <g class="wire w-act">
+                  <path class="base" d="M752 200H856" marker-end="url(#ahDim)" />
+                  <path class="lit" d="M752 200H856" marker-end="url(#ahAct)" />
+                  <path class="flow" pathLength="100" d="M752 200H856" />
+                </g>
+                <g class="wire w-view">
+                  <path class="base" d="M1020 404V520H180V346" marker-end="url(#ahDim)" />
+                  <path class="base" d="M600 520V346" marker-end="url(#ahDim)" />
+                  <path class="lit" d="M1020 404V520H180V346" marker-end="url(#ahView)" />
+                  <path class="lit" d="M600 520V346" marker-end="url(#ahView)" />
+                  <path class="flow" pathLength="100" d="M1020 404V520H180V346" />
+                  <path class="flow" pathLength="100" d="M1020 404V520H600V346" />
+                </g>
+              </svg>
+
+              <div class="node node-assistant">
+                <div class="node-head">
+                  <span class="node-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path class="fill" d="M3 10.5c0-1.4 1.1-2.5 2.5-2.5h3.3c1 0 1.9.6 2.3 1.5l.4.9h1l.4-.9c.4-.9 1.3-1.5 2.3-1.5h3.3c1.4 0 2.5 1.1 2.5 2.5v1c0 2.5-2 4.5-4.5 4.5h-.6c-1.9 0-3.5-1.4-3.8-3.3h-.6C10.9 14.6 9.3 16 7.4 16h-.9C4.6 16 3 14.4 3 12.5v-2Z"/></svg>
+                  </span>
+                  <span><b>Assistant Agent</b><em>the MLLM under test</em></span>
+                </div>
+                <p class="node-note">Sees only the first-person view and the dialogue</p>
+                <p class="node-bubble" id="loopSayA"></p>
+                <div class="node-modes" aria-label="Response modes">
+                  <span data-mode="silent">silent</span><span data-mode="speak">speak</span><span data-mode="done">done</span>
+                </div>
+              </div>
+
+              <div class="node node-human">
+                <div class="node-head">
+                  <span class="node-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20c.8-3.9 3.9-6 7.5-6s6.7 2.1 7.5 6"/></svg>
+                  </span>
+                  <span><b>Human Agent</b><em>a fixed MLLM following guidance</em></span>
+                </div>
+                <p class="node-bubble" id="loopSayH"></p>
+                <div class="node-act">
+                  <ol class="node-cmds">
+                    <li><b>[GRAB]</b> &lt;salad&gt;</li>
+                    <li><b>[WALK]</b> &lt;table&gt;</li>
+                    <li><b>[PUT]</b> &lt;salad&gt; &lt;table&gt;</li>
+                  </ol>
+                  <p class="node-wait">Executable actions appear here</p>
+                </div>
+              </div>
+
+              <div class="node node-world">
+                <div class="node-head">
+                  <span class="node-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 20 7.5v9L12 21l-8-4.5v-9z"/><path d="M4 7.5 12 12l8-4.5M12 12v9"/></svg>
+                  </span>
+                  <span><b>InteractiveWorld</b><em>executes actions, tracks object states</em></span>
+                </div>
+                <div class="fpv">
+                  <img class="fpv-before" src="media/bench/loop_before.jpg" alt="First-person view: a salad on the fridge shelf" loading="lazy" />
+                  <img class="fpv-after" src="media/bench/loop_after.jpg" alt="First-person view: the salad being placed on the table" loading="lazy" />
+                  <span class="fpv-tag"><i class="dot"></i><span class="t0">State s<sub>t</sub></span><span class="t1">State s<sub>t+1</sub></span></span>
+                  <div class="verify">
+                    <p class="verify-title">Final State Check</p>
+                    <p><i>✓</i>Salad on the table</p>
+                    <p><i>✓</i>Cola not on the table</p>
+                    <p class="verify-pass">Task success</p>
+                  </div>
+                </div>
+              </div>
+
+              <span class="wire-label l-guide">Guidance</span>
+              <span class="wire-label l-ask">Question</span>
+              <span class="wire-label l-act">Action a<sub>t</sub></span>
+              <span class="wire-label l-view">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg>
+                Renders the next first-person view
+              </span>
+            </div>
+          </div>
+
+          <div class="loop-controls reveal">
+            <ol class="loop-steps" id="loopSteps">
+              <li><button type="button" data-step="1"><b>1</b>Observe</button></li>
+              <li><button type="button" data-step="2"><b>2</b>Ask</button></li>
+              <li><button type="button" data-step="3"><b>3</b>Guide</button></li>
+              <li><button type="button" data-step="4"><b>4</b>Act</button></li>
+              <li><button type="button" data-step="5"><b>5</b>Update</button></li>
+              <li><button type="button" data-step="6"><b>6</b>Verify</button></li>
+            </ol>
+            <p class="loop-caption" id="loopCaption" aria-live="polite"></p>
+          </div>
+
+        </div>
+
+        <!-- ---------- b. six task categories ---------- -->
+        <div class="block" id="tasks">
+          <div class="block-head reveal">
+            <h3 class="block-title">6 Task Categories</h3>
+            <p class="block-lede">
+              120 human-reviewed tasks, 20 per category, each ending in object states the simulator can check. Every
+              clip below is a real InteractiveBench episode played by the oracle assistant, sped up, with its dialogue
+              and actions overlaid.
+            </p>
+          </div>
+
+          <div class="task-grid">
+            <article class="task-card reveal" style="--c: var(--cat-guidance)" data-task="guidance">
+              <header class="task-head">
+                <span class="task-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 5h14M5 12h9M5 19h6"/><path d="m15 17 2 2 4-4"/></svg></span>
+                <h4>Guidance</h4>
+                <span class="task-count">20 tasks</span>
+              </header>
+              <p class="task-focus">Guides the user step by step, based on their progress.</p>
+              <p class="task-eg"><span class="eg-label">Example</span><b>Griddled Tomato.</b> A first-time cook follows a recipe card. The assistant hands out the next step only once the last one is done.</p>
+              <div class="task-demo">
+                <div class="task-media">
+                  <video muted loop playsinline preload="none" poster="media/tasks/guidance.jpg" data-src="media/tasks/guidance.mp4" aria-label="Oracle run of task GUIDE-14004"></video>
+                  <span class="task-chip task-act" aria-hidden="true"></span>
+                  <ul class="task-memo" aria-hidden="true"></ul>
+                  <span class="task-chip task-id">GUIDE-14004</span>
+                </div>
+                <p class="task-say" data-who="human"><i aria-hidden="true"></i><span>I haven't made this dish before. Guide me one step at a time.</span></p>
+              </div>
+            </article>
+
+            <article class="task-card reveal" style="--c: var(--cat-planning)" data-task="planning">
+              <header class="task-head">
+                <span class="task-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="15" rx="2"/><path d="M3 10h18M8 3v4M16 3v4M7 14h4M13 17h4"/></svg></span>
+                <h4>Planning</h4>
+                <span class="task-count">20 tasks</span>
+              </header>
+              <p class="task-focus">Plans steps within time and resource limits, and replans on the fly.</p>
+              <p class="task-eg"><span class="eg-label">Example</span><b>Cooking for Four Guests.</b> Four allergies, nine menu cards, one oven and one stove, 30 minutes: the assistant picks the safe maximum and schedules it.</p>
+              <div class="task-demo">
+                <div class="task-media">
+                  <video muted loop playsinline preload="none" poster="media/tasks/planning.jpg" data-src="media/tasks/planning.mp4" aria-label="Oracle run of task ORCHESTRATE-99902"></video>
+                  <span class="task-chip task-act" aria-hidden="true"></span>
+                  <ul class="task-memo" aria-hidden="true"></ul>
+                  <span class="task-chip task-id">ORCHESTRATE-99902</span>
+                </div>
+                <p class="task-say" data-who="human"><i aria-hidden="true"></i><span>No dairy, shellfish, gluten or sesame. Most safe dishes in 30 min?</span></p>
+              </div>
+            </article>
+
+            <article class="task-card reveal" style="--c: var(--cat-accessibility)" data-task="accessibility">
+              <header class="task-head">
+                <span class="task-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M2 12s3.6-6.5 10-6.5c1.6 0 3 .4 4.2 1M22 12s-1.2 2.2-3.5 4M9.5 18.1c.8.3 1.6.4 2.5.4 6.4 0 10-6.5 10-6.5"/><path d="M3 21 21 3"/></svg></span>
+                <h4>Accessibility</h4>
+                <span class="task-count">20 tasks</span>
+              </header>
+              <p class="task-focus">Describes the scene so blind or low-vision users can act on their own.</p>
+              <p class="task-eg"><span class="eg-label">Example</span><b>Kitchen Cleanup.</b> The human agent gets no images. The assistant reads the cleanup guide and talks the user through glass, food and dishes.</p>
+              <div class="task-demo">
+                <div class="task-media">
+                  <video muted loop playsinline preload="none" poster="media/tasks/accessibility.jpg" data-src="media/tasks/accessibility.mp4" aria-label="Oracle run of task NARRATE-87016"></video>
+                  <span class="task-chip task-act" aria-hidden="true"></span>
+                  <span class="task-chip task-badge"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12Z"/><path d="M3 21 21 3"/></svg>The human sees nothing</span>
+                  <span class="task-chip task-id">NARRATE-87016</span>
+                </div>
+                <p class="task-say" data-who="human"><i aria-hidden="true"></i><span>What's on these surfaces? Guide me through the cleanup, one item at a time.</span></p>
+              </div>
+            </article>
+
+            <article class="task-card reveal" style="--c: var(--cat-decision)" data-task="decision">
+              <header class="task-head">
+                <span class="task-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3v18M5 7h14M7 7l-3 7a3 3 0 0 0 6 0zM17 7l-3 7a3 3 0 0 0 6 0z"/></svg></span>
+                <h4>Decision</h4>
+                <span class="task-count">20 tasks</span>
+              </header>
+              <p class="task-focus">Makes everyday decisions from what it has seen plus world knowledge.</p>
+              <p class="task-eg"><span class="eg-label">Example</span><b>Supplier Comparison.</b> An order for 40 filters is read in one room, two quotes with different pack sizes in another. The cheaper offer for the full order wins.</p>
+              <div class="task-demo">
+                <div class="task-media">
+                  <video muted loop playsinline preload="none" poster="media/tasks/decision.jpg" data-src="media/tasks/decision.mp4" aria-label="Oracle run of task ASK-81019"></video>
+                  <span class="task-chip task-act" aria-hidden="true"></span>
+                  <ul class="task-memo" aria-hidden="true"></ul>
+                  <span class="task-chip task-id">ASK-81019</span>
+                </div>
+                <p class="task-say" data-who="quiet"><i aria-hidden="true"></i><span>Watching the requisition being read.</span></p>
+              </div>
+            </article>
+
+            <article class="task-card reveal" style="--c: var(--cat-prevention)" data-task="prevention">
+              <header class="task-head">
+                <span class="task-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3 2.5 20h19z"/><path d="M12 10v4M12 17v.5"/></svg></span>
+                <h4>Prevention</h4>
+                <span class="task-count">20 tasks</span>
+              </header>
+              <p class="task-focus">Warns before a mistake happens, while avoiding needless interruptions.</p>
+              <p class="task-eg"><span class="eg-label">Example</span><b>Leaving Home.</b> The fridge and the window were opened earlier. The assistant stays quiet, then stops the user at the exit.</p>
+              <div class="task-demo">
+                <div class="task-media">
+                  <video muted loop playsinline preload="none" poster="media/tasks/prevention.jpg" data-src="media/tasks/prevention.mp4" aria-label="Oracle run of task WATCH-47003"></video>
+                  <span class="task-chip task-act" aria-hidden="true"></span>
+                  <ul class="task-memo" aria-hidden="true"></ul>
+                  <span class="task-chip task-id">WATCH-47003</span>
+                </div>
+                <p class="task-say" data-who="quiet"><i aria-hidden="true"></i><span>Watching quietly. Nothing needs saying yet.</span></p>
+              </div>
+            </article>
+
+            <article class="task-card reveal" style="--c: var(--cat-finding)" data-task="finding">
+              <header class="task-head">
+                <span class="task-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg></span>
+                <h4>Finding</h4>
+                <span class="task-count">20 tasks</span>
+              </header>
+              <p class="task-focus">Finds missing objects by remembering where they went.</p>
+              <p class="task-eg"><span class="eg-label">Example</span><b>Misplaced Cola.</b> The user leaves a red cola on a dining-room table, puts water in the fridge and takes a call, then asks where the cola went.</p>
+              <div class="task-demo">
+                <div class="task-media">
+                  <video muted loop playsinline preload="none" poster="media/tasks/finding.jpg" data-src="media/tasks/finding.mp4" aria-label="Oracle run of task FIND-87004"></video>
+                  <span class="task-chip task-act" aria-hidden="true"></span>
+                  <ul class="task-memo" aria-hidden="true"></ul>
+                  <span class="task-chip task-id">FIND-87004</span>
+                </div>
+                <p class="task-say" data-who="quiet"><i aria-hidden="true"></i><span>Watching where the red cola goes.</span></p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================ 03 RESULTS -->
+      <section class="chapter" id="results" aria-labelledby="resultsTitle">
+        <header class="chapter-head reveal">
+          <h2 class="chapter-title" id="resultsTitle">Evaluation Results</h2>
+          <p class="chapter-lede">
+            Twelve frontier MLLMs take turns in the assistant’s seat, with Gemini 3.1 Pro as the same human agent for
+            all of them. A task passes only if every goal state holds at the end; MCR also gives credit for partial
+            progress.
+          </p>
+        </header>
+
+
+        <!-- leaderboard (Table 2) -->
+        <figure class="viz reveal" id="board">
+          <div class="viz-head">
+            <div>
+              <h3 class="viz-title">Leaderboard</h3>
+              <p class="viz-sub" id="boardSub">Pass rate (%) over all 120 tasks</p>
+            </div>
+            <p class="board-hint" id="boardHint">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4.5 10.6 20l2.2-6.4 6.4-2.2z" /><path d="M14.5 4.2 15.6 2M18.2 7.3l2.2-.9M12.3 3.4 12 1" /></svg>
+              Click a category or metric to re-rank the models
+            </p>
+          </div>
+          <div class="board-controls">
+            <div class="ctl">
+              <span class="ctl-label" id="boardCatsLabel">Task category</span>
+              <div class="seg" id="boardCats" role="group" aria-labelledby="boardCatsLabel"></div>
+            </div>
+            <div class="ctl">
+              <span class="ctl-label" id="boardMetricLabel">Metric</span>
+              <div class="seg seg-metric" id="boardMetric" role="group" aria-labelledby="boardMetricLabel">
+                <button type="button" data-metric="pass" class="is-on" aria-pressed="true">Pass</button>
+                <button type="button" data-metric="mcr" aria-pressed="false">MCR</button>
+              </div>
+            </div>
+          </div>
+          <div class="board" id="boardChart" role="list"></div>
+          <figcaption class="viz-foot">
+            <span><b>Pass</b>: share of tasks with every objective met. <b>MCR</b>: mean fraction of objectives met per task. The same human agent scores 100% with an oracle assistant.</span>
+            <button type="button" class="table-toggle" data-target="boardTable">Show table</button>
+          </figcaption>
+          <div class="viz-table" id="boardTable" hidden></div>
+        </figure>
+
+        <!-- capabilities (Table 3) -->
+        <figure class="viz reveal" id="caps">
+          <div class="viz-head">
+            <div>
+              <h3 class="viz-title">Nine Capabilities, Scored Separately</h3>
+              <p class="viz-sub">Share of passed capability checks (%). Color shows distance from the 12-model mean of each capability.</p>
+            </div>
+            <div class="div-legend" aria-hidden="true">
+              <span>below mean</span>
+              <i class="div-scale"></i>
+              <span>above mean</span>
+              <em>−18</em><em>0</em><em>+18 pp</em>
+            </div>
+          </div>
+          <div class="heat-wrap"><table class="heat" id="heat"></table></div>
+          <figcaption class="viz-foot">
+            <span>Models are ordered by overall task pass rate. <b>Bold</b> marks the best model per capability.</span>
+          </figcaption>
+        </figure>
+
+        <!-- findings -->
+        <div class="block-head findings-head reveal">
+          <h3 class="block-title">Five Key Findings</h3>
+        </div>
+
+        <div class="findings">
+          <article class="finding reveal">
+            <div class="finding-text">
+              <span class="finding-num">1</span>
+              <h4>Closed-Loop Assistance Is Far from Solved.</h4>
+              <p>Even the strongest model helps the human finish fewer than half of the tasks (41.7%), and every other model stays at or below 33.3%. With an oracle assistant, the same human passes all of them.</p>
+            </div>
+            <div class="finding-viz" id="f1"></div>
+          </article>
+
+          <article class="finding reveal">
+            <div class="finding-text">
+              <span class="finding-num">2</span>
+              <h4>One-Shot Decisions Work. Sustaining the Loop Does Not.</h4>
+              <p>The best models reach 85% on Decision, which often hinges on one scene judgment, but only 20% on Guidance and 25% on Planning, which demand continuous tracking, error spotting and replanning. Success also drops quickly as tasks get longer.</p>
+            </div>
+            <div class="finding-viz" id="f2"></div>
+          </article>
+
+          <article class="finding reveal">
+            <div class="finding-text">
+              <span class="finding-num">3</span>
+              <h4>Most Failures Start with Perception and Memory.</h4>
+              <p>Misreading the scene or losing track of changes causes 70.4% to 85.7% of first errors. In a closed loop, a single misperception or forgotten state cascades into every instruction that follows.</p>
+            </div>
+            <div class="finding-viz" id="f3"></div>
+          </article>
+
+          <article class="finding reveal">
+            <div class="finding-text">
+              <span class="finding-num">4</span>
+              <h4>Communication Is Critical.</h4>
+              <p>GLM 5.3 Flash and Claude Fable 5.1 have almost the same average capability score, yet GLM scores far lower on communication and completes 11.7 points fewer tasks. Success is bounded by the weakest link in the chain, not by the average.</p>
+            </div>
+            <div class="finding-viz" id="f4"></div>
+          </article>
+
+          <article class="finding reveal">
+            <div class="finding-text">
+              <span class="finding-num">5</span>
+              <h4>Assistants Waste the Human’s Effort.</h4>
+              <p>Even on tasks they pass, models lead the human through many unnecessary actions: 2.35× to 3.66× the oracle’s steps on Guidance, and up to 6.75× on Accessibility. Efficiency depends on the task more than on the model.</p>
+            </div>
+            <div class="finding-viz" id="f5"></div>
+          </article>
+        </div>
+      </section>
+
+      <!-- ================================================ CLOSING -->
+      <section class="closing reveal" aria-label="Summary">
+        <p class="closing-text">
+          InteractiveWorld turns “does this assistant actually help?” into a question with a verifiable answer.
+          Its state-based rewards also open the door to training assistants that truly help people.
+        </p>
+      </section>
+
+      <section class="cite reveal" id="cite" aria-labelledby="citeTitle">
+        <div class="cite-head">
+          <h3 id="citeTitle">Citation</h3>
+          <button type="button" class="copy-btn" id="copyBib">Copy BibTeX</button>
+        </div>
+        <pre class="bib" id="bib">@misc{wang2026interactiveworld,
+  title   = {InteractiveWorld: A Verifiable Human-Centric Environment for Building Better Interactive MLLM Assistants},
+  author  = {Wang, Qinsi and Wen, Wei and Zhou, Chong and Suri, Saksham and Liu, Zechun and Wu, Lemeng and
+             Li, Hai Helen and Chen, Yiran and Krishnamoorthi, Raghuraman and Qian, Qi},
+  year    = {2026}
+}</pre>
+      </section>
+
+      <footer class="site-footer">
+        <img class="footer-meta logo-dark" src="media/meta_logo.svg" alt="Meta" width="88" height="18" />
+        <img class="footer-meta logo-light" src="media/meta_logo_light.svg" alt="Meta" width="88" height="18" />
+      </footer>
+    </main>
+
+    <div class="tooltip" id="tooltip" role="tooltip" hidden></div>
+
+    <script src="assets/demos.js?v=18"></script>
+    <script src="assets/app.js?v=18"></script>
+    <script src="assets/tasks.js?v=18"></script>
+    <script src="assets/stories.js?v=18"></script>
+    <script src="assets/results.js?v=18"></script>
+  </body>
+</html>
