@@ -3,6 +3,8 @@
 Project page for **InteractiveWorld: A Verifiable Human-Centric Environment for Building Better Interactive MLLM
 Assistants**.
 
+[Paper (arXiv)](https://arxiv.org/abs/2610.33966) · [Code](https://github.com/facebookresearch/InteractiveWorld)
+
 InteractiveWorld simulates a human and a wearable AI assistant interacting in the physical world: the assistant sees
 through the human's eyes and talks, the human decides and acts, and the world responds. InteractiveBench builds a
 closed-loop benchmark of 120 multi-turn tasks on top of it.
@@ -33,9 +35,12 @@ Open Font License 1.1; see `assets/fonts/OFL.txt`.
 
 ```
 @misc{wang2026interactiveworld,
-  title   = {InteractiveWorld: A Verifiable Human-Centric Environment for Building Better Interactive MLLM Assistants},
-  author  = {Wang, Qinsi and Wen, Wei and Zhou, Chong and Suri, Saksham and Liu, Zechun and Wu, Lemeng and
-             Li, Hai Helen and Chen, Yiran and Krishnamoorthi, Raghuraman and Qian, Qi},
-  year    = {2026}
+  title         = {InteractiveWorld: A Verifiable Human-Centric Environment for Building Better Interactive MLLM Assistants},
+  author        = {Wang, Qinsi and Wen, Wei and Zhou, Chong and Suri, Saksham and Liu, Zechun and Wu, Lemeng and
+                   Li, Hai Helen and Chen, Yiran and Krishnamoorthi, Raghuraman and Qian, Qi},
+  year          = {2026},
+  eprint        = {2610.33966},
+  archivePrefix = {arXiv},
+  url           = {https://arxiv.org/abs/2610.33966}
 }
 ```

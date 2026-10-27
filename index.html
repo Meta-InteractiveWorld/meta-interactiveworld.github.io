@@ -19,8 +19,8 @@
         document.documentElement.classList.add("js");
       })();
     </script>
-    <link rel="stylesheet" href="assets/style.css?v=18" />
-    <link rel="stylesheet" href="assets/bench.css?v=18" />
+    <link rel="stylesheet" href="assets/style.css?v=23" />
+    <link rel="stylesheet" href="assets/bench.css?v=23" />
   </head>
   <body>
     <div class="backdrop" aria-hidden="true"></div>
@@ -240,7 +240,7 @@
             <h2 id="actionsTitle">50+ Human Actions</h2>
             <p class="lede">
               The human agent turns guidance into short commands that name only an action and its
-              targets, such as <code>[GRAB] &lt;cup&gt;</code> or <code>[PUTINSIDE] &lt;tray&gt; &lt;oven&gt;</code>.
+              targets, such as <code>[GRAB] &lt;cup&gt;</code> or <code>[PUTINSIDE] &lt;mug&gt; &lt;dishwasher&gt;</code>.
               The simulator works out the motion and renders what the person sees.
             </p>
           </header>
@@ -258,7 +258,7 @@
             <li class="action-tile">
               <div class="clip"><video data-src="media/clips/putinside.mp4" poster="media/clips/putinside.jpg" muted loop playsinline preload="none" aria-label="Put inside"></video></div>
               <p class="action-name">Put Inside</p>
-              <p class="cmd">[PUTINSIDE] &lt;tray&gt; &lt;oven&gt;</p>
+              <p class="cmd">[PUTINSIDE] &lt;mug&gt; &lt;dishwasher&gt;</p>
             </li>
             <li class="action-tile">
               <div class="clip"><video data-src="media/clips/open.mp4" poster="media/clips/open.jpg" muted loop playsinline preload="none" aria-label="Open"></video></div>
@@ -283,7 +283,7 @@
             <li class="action-tile">
               <div class="clip"><video data-src="media/clips/stir.mp4" poster="media/clips/stir.jpg" muted loop playsinline preload="none" aria-label="Stir"></video></div>
               <p class="action-name">Stir</p>
-              <p class="cmd">[STIR] &lt;pan&gt; &lt;spatula&gt;</p>
+              <p class="cmd">[STIR] &lt;mug&gt; &lt;chopstick&gt;</p>
             </li>
             <li class="action-tile">
               <div class="clip"><video data-src="media/clips/wipe.mp4" poster="media/clips/wipe.jpg" muted loop playsinline preload="none" aria-label="Wipe"></video></div>
@@ -730,10 +730,13 @@
           <button type="button" class="copy-btn" id="copyBib">Copy BibTeX</button>
         </div>
         <pre class="bib" id="bib">@misc{wang2026interactiveworld,
-  title   = {InteractiveWorld: A Verifiable Human-Centric Environment for Building Better Interactive MLLM Assistants},
-  author  = {Wang, Qinsi and Wen, Wei and Zhou, Chong and Suri, Saksham and Liu, Zechun and Wu, Lemeng and
-             Li, Hai Helen and Chen, Yiran and Krishnamoorthi, Raghuraman and Qian, Qi},
-  year    = {2026}
+  title         = {InteractiveWorld: A Verifiable Human-Centric Environment for Building Better Interactive MLLM Assistants},
+  author        = {Wang, Qinsi and Wen, Wei and Zhou, Chong and Suri, Saksham and Liu, Zechun and Wu, Lemeng and
+                   Li, Hai Helen and Chen, Yiran and Krishnamoorthi, Raghuraman and Qian, Qi},
+  year          = {2026},
+  eprint        = {2610.33966},
+  archivePrefix = {arXiv},
+  url           = {https://arxiv.org/abs/2610.33966}
 }</pre>
       </section>
 
@@ -745,10 +748,10 @@
 
     <div class="tooltip" id="tooltip" role="tooltip" hidden></div>
 
-    <script src="assets/demos.js?v=18"></script>
-    <script src="assets/app.js?v=18"></script>
-    <script src="assets/tasks.js?v=18"></script>
-    <script src="assets/stories.js?v=18"></script>
-    <script src="assets/results.js?v=18"></script>
+    <script src="assets/demos.js?v=23"></script>
+    <script src="assets/app.js?v=23"></script>
+    <script src="assets/tasks.js?v=23"></script>
+    <script src="assets/stories.js?v=23"></script>
+    <script src="assets/results.js?v=23"></script>
   </body>
 </html>
